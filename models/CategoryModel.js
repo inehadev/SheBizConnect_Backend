@@ -6,14 +6,16 @@ const categorySchema = new mongoose.Schema ({
         type : mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'
     },
-    type:{
-        type:'String'
+    CategoryType:{
+        type:String,
+        require:true
     },
     image:{
-        type:'String'
+        type:String,
+        require:true
     }
     
 })
 
-const category = mongoose.model('category' , categorySchema);
-module.exports= category;
+const Category = mongoose.model('Category' , categorySchema);
+module.exports= Category;
