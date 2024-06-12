@@ -46,7 +46,7 @@ authRouter.post('/login' , async(req , res)=>{
             return res.status(400).json({message:'password doesnot match'})
         }
        
-        const token =  jwt.sign({userId:exisitinguser._id} , "x-auth-token");
+        const token =  jwt.sign({userId:exisitinguser._id} , (process.env.SecretKey));
         if(token){
           return  res.status(200).json({user:exisitinguser , token})
 
