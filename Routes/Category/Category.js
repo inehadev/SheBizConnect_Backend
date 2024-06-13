@@ -37,5 +37,14 @@ categoryRouter.post('/category' , protect ,  async (req,res )=>{
   }
 })
 
+
+/// api to get all categories
+
+categoryRouter.get('/getCategory' , async (req,res)=>{
+    const allCategory = await category.find({});
+    console.log(allCategory);
+    res.status(200).json( allCategory);
+})
+
 module.exports=categoryRouter;
 
