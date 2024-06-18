@@ -3,16 +3,21 @@ const dotenv=require('dotenv');
 const app = express();
 const mongoose = require('mongoose');
 const connectDB = require('./connectDB');
+const bodyParser = require('body-parser');
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 const cors = require('cors')
 const authRouter = require('./Routes/Authentication/Authentication');
 const categoryRouter = require('./Routes/Category/Category');
+
 
 const PORT=4000;
 dotenv.config();
 
 connectDB();
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
+
 
 app.use(  authRouter);
 app.use( categoryRouter)

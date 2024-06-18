@@ -2,8 +2,8 @@ const mongoose=require('mongoose');
  
 const categorySchema = new mongoose.Schema ({
     
-    user_id: {
-        type : mongoose.Schema.Types.ObjectId,
+    posted_by: {
+        type :String,
         ref: 'UserModel'
     },
     CategoryType:{
