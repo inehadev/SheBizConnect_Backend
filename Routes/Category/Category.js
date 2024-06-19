@@ -17,14 +17,16 @@ categoryRouter.post('/category' , protect ,  async (req,res )=>{
     return res.status(400).json({message:" this  type of category already present"});
     }
   console.log("good");
+
+  let imageUrl = image;
     if(image){
          const upload = await  cloudinary.uploader.upload(image);
-         image = upload.secure_url;
+         imageUrl = upload.secure_url;
 
     }
     const newcategory = new category ({
         CategoryType:CategoryType,
-        image:image
+        image:imageUrl
     })
       console.log("fine");
            await newcategory.save();
