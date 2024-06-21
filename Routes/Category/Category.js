@@ -7,7 +7,7 @@ const categoryRouter = express.Router();
 categoryRouter.post('/category' , protect ,  async (req,res )=>{
   console.log(req.body)
   try {
-    const {CategoryType ,image}=req.body;
+    const { posted_by,CategoryType ,image}=req.body;
     console.log("workinging")
     console.log(image);
      const existentCategory = await category.findOne({ CategoryType, image });
@@ -25,12 +25,13 @@ categoryRouter.post('/category' , protect ,  async (req,res )=>{
 
     }
     const newcategory = new category ({
-        CategoryType:CategoryType,
+      posted_by:posted_by,
+      CategoryType:CategoryType,
         image:imageUrl
     })
       console.log("fine");
-           await newcategory.save();
-         return res.status(200).json(newcategory._doc);
+         const response=  await newcategory.save();
+         return res.status(200).json(response);
 
     
   } catch (error) {
