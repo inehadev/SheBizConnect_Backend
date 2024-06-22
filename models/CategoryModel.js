@@ -3,8 +3,9 @@ const mongoose=require('mongoose');
 const categorySchema = new mongoose.Schema ({
     
     posted_by: {
-        type :String,
-        ref: 'UserModel'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UserModel',
+        require:true
     },
     CategoryType:{
         type:String,

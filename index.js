@@ -10,16 +10,18 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 const cors = require('cors')
 const authRouter = require('./Routes/Authentication/Authentication');
 const categoryRouter = require('./Routes/Category/Category');
+const ProfileRoute = require('./Routes/Profile/profile');
 
 
 const PORT=4000;
 dotenv.config();
 
 connectDB();
-app.use(cors({
-    origin: 'https://shebizconnect.vercel.app', // Your frontend URL
-    optionsSuccessStatus: 200
-  }));
+// app.use(cors({
+//     origin: 'https://shebizconnect.vercel.app', // Your frontend URL
+//     optionsSuccessStatus: 200
+//   }));
+app.use(cors());
 app.use(express.json());
 
 cloudinary.config({
@@ -33,6 +35,7 @@ cloudinary.config({
 
 app.use(  authRouter);
 app.use( categoryRouter)
+app.use(ProfileRoute)
 
 
 app.listen(PORT , (req,res) =>{

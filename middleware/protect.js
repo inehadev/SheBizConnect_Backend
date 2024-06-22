@@ -14,8 +14,11 @@ const protect = async(req,res,next)=>{
         return res.status(400).json(`token is not verified`);
         
     }
-
+     req.token = token;
+     req.user=isverified.userId
+     
     console.log({message:"user token is" , token});
+    console.log(req.user);
     next();
     
    } catch (error) {
