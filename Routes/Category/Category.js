@@ -8,7 +8,7 @@ categoryRouter.post('/category' , protect ,  async (req,res )=>{
   console.log(req.body)
   try {
     const { posted_by,CategoryType ,image}=req.body;
-    console.log("workinging")
+    
     console.log(image);
      const existentCategory = await category.findOne({ CategoryType, image });
     
@@ -16,7 +16,7 @@ categoryRouter.post('/category' , protect ,  async (req,res )=>{
     console.log("this category is already present");
     return res.status(400).json({message:" this  type of category already present"});
     }
-  console.log("good");
+ 
 
   let imageUrl = image;
     if(image){
@@ -29,7 +29,7 @@ categoryRouter.post('/category' , protect ,  async (req,res )=>{
       CategoryType:CategoryType,
         image:imageUrl
     })
-      console.log("fine");
+    
          const response=  await newcategory.save();
          return res.status(200).json(response);
 
