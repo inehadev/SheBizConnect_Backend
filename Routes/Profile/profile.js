@@ -8,9 +8,9 @@ const cloudinary = require('cloudinary').v2
 
 ProfileRoute.post('/create', protect, async (req, res) => {
   try {
-    const { title, type, location, foodtype, categoryType, categoryId } = req.body;
+    const { title, typeofp, location,  categoryType, categoryId } = req.body;
     let { img } = req.body;
-    const created_by = req.user;
+     created_by = req.user;
 
 
     const existentProfile = await Profile.findOne({ title, img });
@@ -29,36 +29,28 @@ ProfileRoute.post('/create', protect, async (req, res) => {
       categoryType,
       title: title,
       img: img,
-      type: type,
+      typeofp: typeofp,
       location: location
 
     })
 
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
-    try {
-      await profile.save({ session });
-
-      const updatequery = {};
-      updatequery[`profiles.{categoryType}`] = profile._id;
-
-      await Category.findByIdAndUpdate(
-        categoryId,
-        { $push: updatequery },
-        { session }
-      )
-      await session.commitTransaction();
-      session.endSession();
-
-    } catch (error) {
-      await session.abortTransaction();
-      session.endSession();
-      throw error;
-
+   
+    const savedprofile = await profile.save();
+   
+    const category= await Category.findById(categoryId);
+    if (!category) {
+      return res.status(404).json({ message: 'CategoryId not found' });
     }
-    await profile.save();
-    return res.status(200).json({ message: "profile is created ", profile });
+    
+    if (!category.profiles[categoryType]) {
+      return res.status(400).json({ message: 'Invalid profile type' });
+    }
+
+  category.profiles[categoryType].push(savedprofile._id);
+  await category.save();
+
+
+      return res.status(200).json({ message: "profile is created and saved in category ", savedprofile });
 
   } catch (error) {
     console.log(error);

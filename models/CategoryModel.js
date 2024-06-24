@@ -16,23 +16,23 @@ const categorySchema = new mongoose.Schema ({
         require:true
     },
     profiles: {
-        cooking: [{
+        Cooking: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Profile'
         }],
-        style: [{
+        Style: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Profile'
         }],
-        art: [{
+        Art: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Profile'
         }],
-        marketing: [{
+        Marketing: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Profile'
         }],
-        health: [{
+        Health: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Profile'
         }]

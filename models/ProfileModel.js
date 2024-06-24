@@ -22,7 +22,7 @@ const profileSchema = new mongoose.Schema({
     img:{
         type:String
     },
-    type:{
+    typeofp:{
         type:String
     },
     location:{

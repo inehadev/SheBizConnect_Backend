@@ -1,14 +1,16 @@
 const express = require('express');
 const protect = require('../../middleware/protect.js')
-const category = require('../../models/CategoryModel.js')
+const category = require('../../models/CategoryModel.js');
+const Category = require('../../models/CategoryModel.js');
 const cloudinary = require('cloudinary').v2;
 const categoryRouter = express.Router();
 
 categoryRouter.post('/category' , protect ,  async (req,res )=>{
   console.log(req.body)
   try {
-    const { posted_by,CategoryType ,image}=req.body;
-    
+    const { CategoryType ,image , profiles}=req.body;
+    posted_by = req.user;
+    console.log(posted_by);
     console.log(image);
      const existentCategory = await category.findOne({ CategoryType, image });
     
@@ -25,9 +27,11 @@ categoryRouter.post('/category' , protect ,  async (req,res )=>{
 
     }
     const newcategory = new category ({
-      posted_by:posted_by,
+      
+      posted_by,
       CategoryType:CategoryType,
-        image:imageUrl
+        image:imageUrl,
+        profiles
     })
     
          const response=  await newcategory.save();
@@ -50,5 +54,35 @@ categoryRouter.get('/getCategory' , async (req,res)=>{
     res.status(200).json( allCategory);
 })
 
+
+// api to get subcategory 
+
+categoryRouter.get('/getsubcategory' , async(req,res)=>{
+  const {categoryId , subcategory}=req.query;
+
+  if(! categoryId || !subcategory){
+    return res.status(400).json({ message: 'Category ID and subcategory are required' });
+  }
+
+  try {
+    const category = await Category.findById(categoryId)
+    .populate(`profiles.${subcategory}`)
+    .exec();
+    
+    if (!category) {
+      return res.status(404).json({ message: 'subCategory not found' });
+
+  }
+  const profiles=category.profiles[subcategory];
+  console.log(profile);
+  res.json({ profiles });
+
+
+
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching subcategory profiles', error });
+    
+  }
+})
 module.exports=categoryRouter;
 
