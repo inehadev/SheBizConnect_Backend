@@ -58,31 +58,19 @@ categoryRouter.get('/getCategory' , async (req,res)=>{
 // api to get subcategory 
 
 categoryRouter.get('/getsubcategory' , async(req,res)=>{
-  const {categoryId , subcategory}=req.query;
+  
 
-  if(! categoryId || !subcategory){
-    return res.status(400).json({ message: 'Category ID and subcategory are required' });
-  }
+  const subcategory = 'Cooking';
 
-  try {
-    const category = await Category.findById(categoryId)
-    .populate(`profiles.${subcategory}`)
-    .exec();
+  const categories = await Category.find({ CategoryType: 'Cooking' }).populate({
+    path: `profiles.${subcategory}`,
     
-    if (!category) {
-      return res.status(404).json({ message: 'subCategory not found' });
+  });
 
-  }
-  const profiles=category.profiles[subcategory];
-  console.log(profile);
-  res.json({ profiles });
+  const cookingProfiles = categories.flatMap(category => category.profiles.Cooking);
 
+  res.send(cookingProfiles);
 
-
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching subcategory profiles', error });
-    
-  }
 })
 module.exports=categoryRouter;
 
