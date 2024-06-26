@@ -62,12 +62,12 @@ categoryRouter.get('/getsubcategory' , async(req,res)=>{
 
   const subcategory = 'Cooking';
 
-  const categories = await Category.find({ CategoryType: 'Cooking' }).populate({
+  const categories = await Category.find({ CategoryType: subcategory }).populate({
     path: `profiles.${subcategory}`,
     
   });
 
-  const cookingProfiles = categories.flatMap(category => category.profiles.Cooking);
+  const cookingProfiles = categories.flatMap(category => category.profiles[categories]);
 
   res.send(cookingProfiles);
 
