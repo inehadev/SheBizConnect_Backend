@@ -8,9 +8,10 @@ const cloudinary = require('cloudinary').v2
 
 ProfileRoute.post('/create', protect, async (req, res) => {
   try {
-    const { title, typeofp, location,  categoryType, categoryId } = req.body;
+    const { title, typeofp, location,   categoryId } = req.body;
     let { img } = req.body;
      created_by = req.user;
+     console.log(created_by)
 
 
     const existentProfile = await Profile.findOne({ title, img });
@@ -26,7 +27,7 @@ ProfileRoute.post('/create', protect, async (req, res) => {
     const profile = new Profile({
       created_by,
       categoryId,
-      categoryType,
+      // categoryType,
       title: title,
       img: img,
       typeofp: typeofp,
@@ -42,11 +43,11 @@ ProfileRoute.post('/create', protect, async (req, res) => {
       return res.status(404).json({ message: 'CategoryId not found' });
     }
     
-    if (!category.profiles[categoryType]) {
-      return res.status(400).json({ message: 'Invalid profile type' });
-    }
+    // if (!category.profiles[categoryType]) {
+    //   return res.status(400).json({ message: 'Invalid profile type' });
+    // }
 
-  category.profiles[categoryType].push(savedprofile._id);
+  category.profiles.push(savedprofile._id);
   await category.save();
 
 
@@ -71,6 +72,12 @@ ProfileRoute.get('/getprofile', async (req, res) => {
     console.log(error.message);
     return res.status(400).json({ message: error });
   }
+})
+
+
+
+ProfileRoute.get('/get' , protect,(req,res)=>{
+  res.send(req.user);
 })
 
 module.exports = ProfileRoute;

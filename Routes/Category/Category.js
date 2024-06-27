@@ -58,18 +58,15 @@ categoryRouter.get('/getCategory' , async (req,res)=>{
 // api to get subcategory 
 
 categoryRouter.get('/getsubcategory' , async(req,res)=>{
-  
+  const { categoryId } = req.params;
+try{
+  const category = await Category.findById(categoryId).populate('profiles');
 
-  const subcategory = 'Cooking';
-
-  const categories = await Category.find({ CategoryType: subcategory }).populate({
-    path: `profiles.${subcategory}`,
-    
-  });
-
-  const cookingProfiles = categories.flatMap(category => category.profiles[categories]);
-
-  res.send(cookingProfiles);
+console.log('Categories with profiles:', category);
+return category;
+} catch (error) {
+console.error('Error getting categories with profiles:', error);
+}
 
 })
 module.exports=categoryRouter;

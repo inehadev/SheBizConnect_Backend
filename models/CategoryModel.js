@@ -15,31 +15,14 @@ const categorySchema = new mongoose.Schema ({
         type:String,
         require:true
     },
-    profiles: {
-        Cooking: [{
+    profiles: 
+         [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Profile'
         }],
-        Style: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Profile'
-        }],
-        Art: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Profile'
-        }],
-        Marketing: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Profile'
-        }],
-        Health: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Profile'
-        }]
-        // Add more categories as needed
-    }
+      }
     
-})
+)
 
 const Category = mongoose.model('Category' , categorySchema);
 module.exports= Category;
