@@ -57,10 +57,15 @@ categoryRouter.get('/getCategory' , async (req,res)=>{
 
 // api to get subcategory 
 
-categoryRouter.get('/getsubcategory' , async(req,res)=>{
+categoryRouter.get('/getsubcategory/:categoryId' , async(req,res)=>{
   const { categoryId } = req.params;
+  console.log(`Fetching category with ID: ${categoryId}`);
+  
 try{
+
   const category = await Category.findById(categoryId).populate('profiles');
+  res.json(category);
+  console.log(`Category found: ${category}`);
 
 console.log('Categories with profiles:', category);
 return category;
