@@ -24,6 +24,10 @@ const profileSchema = new mongoose.Schema({
     },
     location:{
         type:String
+    },
+    rating:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'rating'
     }
 
 })

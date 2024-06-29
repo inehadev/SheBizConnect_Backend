@@ -5,6 +5,7 @@ const protect = require('../../middleware/protect');
 const { default: mongoose } = require('mongoose');
 const Category = require('../../models/CategoryModel');
 const cloudinary = require('cloudinary').v2
+const rating = require('../../models/RatingModel')
 
 ProfileRoute.post('/create', protect, async (req, res) => {
   try {
@@ -27,7 +28,6 @@ ProfileRoute.post('/create', protect, async (req, res) => {
     const profile = new Profile({
       created_by,
       categoryId,
-      // categoryType,
       title: title,
       img: img,
       typeofp: typeofp,
@@ -43,9 +43,6 @@ ProfileRoute.post('/create', protect, async (req, res) => {
       return res.status(404).json({ message: 'CategoryId not found' });
     }
     
-    // if (!category.profiles[categoryType]) {
-    //   return res.status(400).json({ message: 'Invalid profile type' });
-    // }
 
   category.profiles.push(savedprofile._id);
   await category.save();
@@ -61,11 +58,47 @@ ProfileRoute.post('/create', protect, async (req, res) => {
 
 })
 
-ProfileRoute.get('/getprofile', async (req, res) => {
+///////rating to profiles
+
+ProfileRoute.post('/rate/:profieId' , async(req,res)=>{
   try {
-    const allprofile = await Profile.find({});
-    console.log(allprofile);
-    return res.status(200).json({ message: "all profile are", allprofile });
+    const profileId = '667e672bd9d11d9d197dcd32';
+    const userId = req.user.userId;
+
+    const {rating} = req.body;
+    if(!rating || rating < 1 ||  rating >5){
+      return res.status(400).json({ message: 'Rating should be a number between 1 and 5' });
+    }
+
+
+    const profile = await Profile.findById(profileId);
+    if (!profile) {
+      return res.status(404).json({ message: 'Profile not found' });
+    } 
+    const newrating = new rating({
+      userId ,
+      rating :rating,
+    })
+    
+    const savedRating = await  newrating.save();
+    profile.rating.push(savedRating._id);
+    await profile.save();
+
+    return res.status(200).json({ message: 'Rating added successfully', profile });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+    
+  }
+})
+
+
+
+ProfileRoute.get('/getprofile/:profileId', async (req, res) => {
+  try {
+    const profileId= req.params;
+
 
 
   } catch (error) {
