@@ -5,6 +5,9 @@ const Category = require('../../models/CategoryModel.js');
 const cloudinary = require('cloudinary').v2;
 const categoryRouter = express.Router();
 
+
+/// api to create category 
+
 categoryRouter.post('/category' , protect ,  async (req,res )=>{
   console.log(req.body)
   try {
@@ -55,7 +58,7 @@ categoryRouter.get('/getCategory' , async (req,res)=>{
 })
 
 
-// api to get subcategory 
+// api to get profiles from category
 
 categoryRouter.get('/getsubcategory/:categoryId' , async(req,res)=>{
   const { categoryId } = req.params;

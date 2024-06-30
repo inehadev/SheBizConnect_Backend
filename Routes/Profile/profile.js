@@ -2,10 +2,9 @@ const express = require('express');
 const ProfileRoute = express.Router();
 const Profile = require('../../models/ProfileModel');
 const protect = require('../../middleware/protect');
-const { default: mongoose } = require('mongoose');
 const Category = require('../../models/CategoryModel');
 const cloudinary = require('cloudinary').v2
-const rating = require('../../models/RatingModel')
+const Rating = require('../../models/RatingModel')
 
 ProfileRoute.post('/create', protect, async (req, res) => {
   try {
@@ -60,10 +59,10 @@ ProfileRoute.post('/create', protect, async (req, res) => {
 
 ///////rating to profiles
 
-ProfileRoute.post('/rate/:profieId' , async(req,res)=>{
+ProfileRoute.post('/rate/:profileId' ,  protect , async(req,res)=>{
   try {
-    const profileId = '667e672bd9d11d9d197dcd32';
-    const userId = req.user.userId;
+    const {profileId} = req.params;
+     userId = req.user;
 
     const {rating} = req.body;
     if(!rating || rating < 1 ||  rating >5){
@@ -75,7 +74,7 @@ ProfileRoute.post('/rate/:profieId' , async(req,res)=>{
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' });
     } 
-    const newrating = new rating({
+    const newrating = new Rating({
       userId ,
       rating :rating,
     })
@@ -95,9 +94,18 @@ ProfileRoute.post('/rate/:profieId' , async(req,res)=>{
 
 
 
-ProfileRoute.get('/getprofile/:profileId', async (req, res) => {
+ProfileRoute.get('/getprofile/:profileId', protect , async (req, res) => {
   try {
-    const profileId= req.params;
+    const {profileId}= req.params;
+   
+    const profile = await Profile.findById(profileId);
+    if(!profile){
+      console.log("profile not found");
+      return res.status(400).json({message:"profile is not found"});
+     
+    }else{
+      return res.status(200).json(profile);
+    }
 
 
 
@@ -109,8 +117,6 @@ ProfileRoute.get('/getprofile/:profileId', async (req, res) => {
 
 
 
-ProfileRoute.get('/get' , protect,(req,res)=>{
-  res.send(req.user);
-})
+
 
 module.exports = ProfileRoute;
