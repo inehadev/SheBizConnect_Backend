@@ -6,6 +6,9 @@ const Category = require('../../models/CategoryModel');
 const cloudinary = require('cloudinary').v2
 const Rating = require('../../models/RatingModel')
 
+
+/// api to create profile 
+
 ProfileRoute.post('/create', protect, async (req, res) => {
   try {
     const { title, typeofp, location,   categoryId } = req.body;
@@ -59,6 +62,7 @@ ProfileRoute.post('/create', protect, async (req, res) => {
 
 ///////rating to profiles
 
+
 ProfileRoute.post('/rate/:profileId' ,  protect , async(req,res)=>{
   try {
     const {profileId} = req.params;
@@ -80,7 +84,7 @@ ProfileRoute.post('/rate/:profileId' ,  protect , async(req,res)=>{
     })
     
     const savedRating = await  newrating.save();
-    profile.rating.push(savedRating._id);
+    profile.ratings.push(savedRating.rating);
     await profile.save();
 
     return res.status(200).json({ message: 'Rating added successfully', profile });
@@ -92,11 +96,12 @@ ProfileRoute.post('/rate/:profileId' ,  protect , async(req,res)=>{
   }
 })
 
+////api to get profile with profileId
 
-
-ProfileRoute.get('/getprofile/:profileId', protect , async (req, res) => {
+ProfileRoute.get('/getprofile/:profileId' , async (req, res) => {
   try {
     const {profileId}= req.params;
+
    
     const profile = await Profile.findById(profileId);
     if(!profile){
@@ -110,11 +115,49 @@ ProfileRoute.get('/getprofile/:profileId', protect , async (req, res) => {
 
 
   } catch (error) {
+    
     console.log(error.message);
     return res.status(400).json({ message: error });
   }
 })
 
+
+/// api to update profile
+
+ProfileRoute.post('/updateProfile/:profileId' , protect ,async(req,re)=>{
+
+  try {
+    const {title, images , typeofp , updated_By , updated_to , contact , loaction}=req.body;
+    updated_By=req.user;
+   const {profileId }= req.params;
+    updated_to=req.params;
+  
+    const profile=await Profile.findById(profileId);
+     
+    if(!profile){
+      return res.status(400).json("profile is not found");
+  
+  
+    }
+  
+    
+      profile.title=title,
+      profile.location=location,
+      profile.images=images,
+      profile.typeofp=typeofp,
+      profile.contact=contact;
+   
+      const response = await profile.save();
+  
+    
+  
+    
+  } catch (error) {
+    console.log(error);
+    
+    
+  }
+})
 
 
 
