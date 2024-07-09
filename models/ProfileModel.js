@@ -29,7 +29,15 @@ const profileSchema = new mongoose.Schema({
         type:[Number],
         ref:'rating',
         default : []
-    }
+    },
+    gallery: [{
+        type: String,
+    }],
+    item: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Item',
+    }]
+
 
 })
 

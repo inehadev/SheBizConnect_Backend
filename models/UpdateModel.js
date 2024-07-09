@@ -24,6 +24,9 @@ const UpdateModel = new mongoose.Schema({
     },
     contact:{
         type:Number,
+    },
+    profilepic:{
+        type:String
     }
 
 

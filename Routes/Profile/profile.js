@@ -124,13 +124,14 @@ ProfileRoute.get('/getprofile/:profileId' , async (req, res) => {
 
 /// api to update profile
 
-ProfileRoute.post('/updateProfile/:profileId' , protect ,async(req,re)=>{
+ProfileRoute.post('/updateProfile/:profileId' , protect ,async(req,res)=>{
 
   try {
-    const {title, images , typeofp , updated_By , updated_to , contact , loaction}=req.body;
-    updated_By=req.user;
-   const {profileId }= req.params;
-    updated_to=req.params;
+    const {title, images , typeofp ,   contact , location}=req.body;
+    
+    const {profileId }= req.params;
+    const updated_By = req.user;
+    const {updated_to} = profileId;
   
     const profile=await Profile.findById(profileId);
      
@@ -145,9 +146,12 @@ ProfileRoute.post('/updateProfile/:profileId' , protect ,async(req,re)=>{
       profile.location=location,
       profile.images=images,
       profile.typeofp=typeofp,
-      profile.contact=contact;
-   
+       profile.contact = contact;
+      profile.updated_By = updated_By;
+      profile.updated_to = updated_to;
+
       const response = await profile.save();
+      res.status(200).json(response);
   
     
   
