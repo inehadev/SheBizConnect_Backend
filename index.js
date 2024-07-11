@@ -11,6 +11,7 @@ const cors = require('cors')
 const authRouter = require('./Routes/Authentication/Authentication');
 const categoryRouter = require('./Routes/Category/Category');
 const ProfileRoute = require('./Routes/Profile/profile');
+const ItemRoute = require('./Routes/Item/item');
 
 
 const PORT=4000;
@@ -36,6 +37,7 @@ cloudinary.config({
 app.use(  authRouter);
 app.use( categoryRouter)
 app.use(ProfileRoute)
+app.use(ItemRoute);
 
 
 app.listen(PORT , (req,res) =>{

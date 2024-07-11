@@ -30,14 +30,10 @@ const profileSchema = new mongoose.Schema({
         ref:'rating',
         default : []
     },
-    gallery: [{
-        type: String,
-    }],
-    item: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Item',
-    }]
-
+    AddItem:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Item'
+    }
 
 })
 
