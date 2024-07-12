@@ -7,14 +7,15 @@ const ItemRoute = express.Router();
 
 ItemRoute.post('/createItem/:profileId' , protect , async(req,res)=>{
   try {
-      const {img , profileId , created_by , price , name}=req.body;
-    const existitem = await Item.findOne({name , img , profileId});
+      const {img  , price , name}=req.body;
+    const existitem = await Item.findOne({name , img });
     if(existitem){
         res.status(400).json("This item already exist");
         
     }
-      created_by=req.user;
-      profileId=req.params;
+   const  { created_by}=req.user;
+   const  { profileId}=req.params;
+   const Profile = await profile.findById(profileId);
 
     const newItem = new Item({
         created_by,
@@ -24,13 +25,16 @@ ItemRoute.post('/createItem/:profileId' , protect , async(req,res)=>{
         name:name
         
     })
+    
 
      await newItem.save();
      console.log("item is added successfully");
-     const profile = await profile.findById(profileId);
-     if (profile) {
-       profile.AddItem.push(newItem);
-       await profile.save();
+    
+   
+     if (Profile) {
+       Profile.AddItem.push(newItem);
+       await Profile.save();
+       res.json(Profile);
      } else {
        return res.status(404).json("Profile not found");
      }

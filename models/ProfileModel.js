@@ -31,7 +31,7 @@ const profileSchema = new mongoose.Schema({
         default : []
     },
     AddItem:{
-        type:mongoose.Schema.Types.ObjectId,
+        type:[mongoose.Schema.Types.ObjectId],
         ref:'Item'
     }
 

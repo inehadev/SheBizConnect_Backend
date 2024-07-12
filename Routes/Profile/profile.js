@@ -127,7 +127,7 @@ ProfileRoute.get('/getprofile/:profileId' , async (req, res) => {
 ProfileRoute.post('/updateProfile/:profileId' , protect ,async(req,res)=>{
 
   try {
-    const {title, images , typeofp ,   contact , location}=req.body;
+    const {title, images , typeofp ,    contact , location}=req.body;
     
     const {profileId }= req.params;
     const updated_By = req.user;
