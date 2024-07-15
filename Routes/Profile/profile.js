@@ -124,7 +124,7 @@ ProfileRoute.get('/getprofile/:profileId' , async (req, res) => {
 
 /// api to update profile
 
-ProfileRoute.post('/updateProfile/:profileId' , protect ,async(req,res)=>{
+ProfileRoute.put('/updateProfile/:profileId' , protect ,async(req,res)=>{
 
   try {
     const {title, images , typeofp ,    contact , location}=req.body;
@@ -142,13 +142,16 @@ ProfileRoute.post('/updateProfile/:profileId' , protect ,async(req,res)=>{
     }
   
     
-      profile.title=title,
-      profile.location=location,
-      profile.images=images,
-      profile.typeofp=typeofp,
-       profile.contact = contact;
+      profile.title=title || profile.title,
+      profile.location=location || profile.location,
+      profile.images=images ,
+      profile.typeofp=typeofp || profile.typeofp,
+       profile.contact = contact || profile.contact;
       profile.updated_By = updated_By;
       profile.updated_to = updated_to;
+
+      
+  
 
       const response = await profile.save();
       res.status(200).json(response);
