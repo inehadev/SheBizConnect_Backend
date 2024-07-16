@@ -25,14 +25,13 @@ const profileSchema = new mongoose.Schema({
     location:{
         type:String
     },
-    ratings:{
-        type:[Number],
-        ref:'rating',
-        default : []
-    },
+   
     AddItem:{
         type:[mongoose.Schema.Types.ObjectId],
         ref:'Item'
+    },
+    contact:{
+        type:Number
     }
 
 })

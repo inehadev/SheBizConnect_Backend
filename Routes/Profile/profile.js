@@ -144,12 +144,16 @@ ProfileRoute.put('/updateProfile/:profileId' , protect ,async(req,res)=>{
     
       profile.title=title || profile.title,
       profile.location=location || profile.location,
-      profile.images=images ,
       profile.typeofp=typeofp || profile.typeofp,
-       profile.contact = contact || profile.contact;
       profile.updated_By = updated_By;
       profile.updated_to = updated_to;
 
+      if (req.body.img) {
+        profile.img = req.body.img;
+      }
+  
+      if (req.body.contact) {
+          profile.contact = req.body.contact;
       
   
 
@@ -158,7 +162,7 @@ ProfileRoute.put('/updateProfile/:profileId' , protect ,async(req,res)=>{
   
     
   
-    
+      }
   } catch (error) {
     console.log(error);
     

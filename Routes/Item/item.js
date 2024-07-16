@@ -3,6 +3,7 @@ const Item = require('../../models/ItemModel');
 const profile=require('../../models/ProfileModel');
 const protect = require('../../middleware/protect');
 const mongoose = require('mongoose');
+const cloudinary = require('cloudinary').v2;
 
 const ItemRoute = express.Router();
 
@@ -18,6 +19,12 @@ ItemRoute.post('/createItem/:profileId' , protect , async(req,res)=>{
     if(existitem){
         res.status(400).json("This item already exist");
         
+    }
+    if(img){
+      const response = await cloudinary.uploader.upload(img);
+      img= response.secure_url;
+      console.log(img);
+
     }
    
    const Profile = await profile.findById(profileId);
@@ -55,7 +62,7 @@ ItemRoute.post('/createItem/:profileId' , protect , async(req,res)=>{
 
 ///api to get profileItem
 
-ItemRoute.get('/profileItem/:profileId' , protect , async(req,res)=>{
+ItemRoute.get('/profileItem/:profileId'  , async(req,res)=>{
   try {
     const {profileId} =req.params;
     const Profile = await profile.findById(profileId).populate('AddItem');
