@@ -127,7 +127,7 @@ ProfileRoute.get('/getprofile/:profileId' , async (req, res) => {
 ProfileRoute.put('/updateProfile/:profileId' , protect ,async(req,res)=>{
 
   try {
-    const {title, images , typeofp ,    contact , location}=req.body;
+    const {title,   typeofp ,  location}=req.body;
     
     const {profileId }= req.params;
     const updated_By = req.user;
@@ -154,15 +154,14 @@ ProfileRoute.put('/updateProfile/:profileId' , protect ,async(req,res)=>{
   
       if (req.body.contact) {
           profile.contact = req.body.contact;
-      
-  
-
-      const response = await profile.save();
-      res.status(200).json(response);
-  
-    
   
       }
+
+      if(req.body.AddGallery){
+        profile.AddGallery = req.body.AddGallery;
+      }
+      const response = await profile.save();
+      res.status(200).json(response);
   } catch (error) {
     console.log(error);
     

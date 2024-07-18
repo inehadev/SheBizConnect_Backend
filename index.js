@@ -12,6 +12,7 @@ const authRouter = require('./Routes/Authentication/Authentication');
 const categoryRouter = require('./Routes/Category/Category');
 const ProfileRoute = require('./Routes/Profile/profile');
 const ItemRoute = require('./Routes/Item/item');
+const visitRouter = require('./Routes/Profile/visitProfile');
 
 
 const PORT=4000;
@@ -38,6 +39,7 @@ app.use(  authRouter);
 app.use( categoryRouter)
 app.use(ProfileRoute)
 app.use(ItemRoute);
+app.use(visitRouter);
 
 
 app.listen(PORT , (req,res) =>{

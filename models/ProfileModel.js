@@ -26,13 +26,17 @@ const profileSchema = new mongoose.Schema({
         type:String
     },
    
-    AddItem:{
-        type:[mongoose.Schema.Types.ObjectId],
-        ref:'Item'
-    },
+    AddItem: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Item'
+    }],
     contact:{
         type:Number
-    }
+    },
+    AddGallery: [{
+        type: String
+    }]
+    
 
 })
 
