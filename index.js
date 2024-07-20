@@ -19,12 +19,10 @@ dotenv.config();
 connectDB();
 
 app.use(cors({
-  origin: 'https://shebizconnect.vercel.app',
-  methods: ['GET', 'POST', 'PUT'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 200,
-})) 
+  origin: '*', // Your frontend URL
+  optionsSuccessStatus: 200
+}));
+
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
