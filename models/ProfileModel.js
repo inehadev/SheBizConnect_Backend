@@ -16,7 +16,7 @@ const profileSchema = new mongoose.Schema({
         ref: 'Category',
         required: true
     },
-    img:{
+    profileImg:{
         type:String
     },
     typeofp:{
@@ -34,7 +34,9 @@ const profileSchema = new mongoose.Schema({
         type:Number
     },
     AddGallery: [{
-        type: String
+        url:{
+            type:String
+        }
     }]
     
 

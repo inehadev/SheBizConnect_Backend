@@ -15,7 +15,7 @@ visitRouter.get('/visit/:profileId'  , async(req,res)=>{
             if (Profile) {
                 res.status(200).json({ AddGallery: Profile.AddGallery });
                 console.log(`the visitProfile AddGallery: ${Profile.AddGallery}`);
-    console.log(`the visitptofile ${Profile}`);
+               
             }
         
     } catch (error) {

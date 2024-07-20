@@ -12,18 +12,18 @@ const Rating = require('../../models/RatingModel')
 ProfileRoute.post('/create', protect, async (req, res) => {
   try {
     const { title, typeofp, location,   categoryId } = req.body;
-    let { img } = req.body;
+    let { profileImg } = req.body;
      created_by = req.user;
      console.log(created_by)
 
 
-    const existentProfile = await Profile.findOne({ title, img });
+    const existentProfile = await Profile.findOne({ title, profileImg });
     if (existentProfile) {
       return res.status(400).json({ message: "profile already existed" });
     }
-    if (img) {
-      const response = await cloudinary.uploader.upload(img);
-      img = response.secure_url;
+    if (profileImg) {
+      const response = await cloudinary.uploader.upload(profileImg);
+      profileImg = response.secure_url;
       console.log(response.secure_url);
     }
 
@@ -31,7 +31,7 @@ ProfileRoute.post('/create', protect, async (req, res) => {
       created_by,
       categoryId,
       title: title,
-      img: img,
+      profileImg: profileImg,
       typeofp: typeofp,
       location: location
 
@@ -127,7 +127,7 @@ ProfileRoute.get('/getprofile/:profileId' , async (req, res) => {
 ProfileRoute.put('/updateProfile/:profileId' , protect ,async(req,res)=>{
 
   try {
-    const {title,   typeofp ,  location}=req.body;
+    const {title,   typeofp , AddGallery,  location}=req.body;
     
     const {profileId }= req.params;
     const updated_By = req.user;
@@ -137,8 +137,7 @@ ProfileRoute.put('/updateProfile/:profileId' , protect ,async(req,res)=>{
      
     if(!profile){
       return res.status(400).json("profile is not found");
-  
-  
+
     }
   
     
@@ -148,8 +147,8 @@ ProfileRoute.put('/updateProfile/:profileId' , protect ,async(req,res)=>{
       profile.updated_By = updated_By;
       profile.updated_to = updated_to;
 
-      if (req.body.img) {
-        profile.img = req.body.img;
+      if (req.body.profileImg) {
+        profile.profileImg = req.body.profileImg;
       }
   
       if (req.body.contact) {
@@ -157,9 +156,17 @@ ProfileRoute.put('/updateProfile/:profileId' , protect ,async(req,res)=>{
   
       }
 
-      if(req.body.AddGallery){
-        profile.AddGallery = req.body.AddGallery;
+      
+      let GalleryBuffer =[];
+
+      for(let i=0;i<AddGallery.length;i++){
+        const result = await cloudinary.uploader.upload(AddGallery[i]);
+        GalleryBuffer.push({url:result.secure_url})
       }
+      
+    
+
+    profile.AddGallery=GalleryBuffer
       const response = await profile.save();
       res.status(200).json(response);
   } catch (error) {

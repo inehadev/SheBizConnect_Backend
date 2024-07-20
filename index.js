@@ -3,11 +3,9 @@ const dotenv=require('dotenv');
 const app = express();
 const mongoose = require('mongoose');
 const connectDB = require('./connectDB');
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const cloudinary=require('cloudinary').v2;
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-const cors = require('cors')
 const authRouter = require('./Routes/Authentication/Authentication');
 const categoryRouter = require('./Routes/Category/Category');
 const ProfileRoute = require('./Routes/Profile/profile');
@@ -15,15 +13,21 @@ const ItemRoute = require('./Routes/Item/item');
 const visitRouter = require('./Routes/Profile/visitProfile');
 
 
-const PORT=4000;
+
 dotenv.config();
 
 connectDB();
-// app.use(cors({
-//     origin: 'https://shebizconnect.vercel.app', // Your frontend URL
-//     optionsSuccessStatus: 200
-//   }));
-app.use(cors());
+
+app.use(cors({
+  origin: 'https://shebizconnect.vercel.app',
+  methods: ['GET', 'POST', 'PUT'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200,
+})) 
+
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.json());
 
 cloudinary.config({
@@ -41,6 +45,7 @@ app.use(ProfileRoute)
 app.use(ItemRoute);
 app.use(visitRouter);
 
+const PORT=4000;
 
 app.listen(PORT , (req,res) =>{
     console.log(`server is running at ${PORT}`);

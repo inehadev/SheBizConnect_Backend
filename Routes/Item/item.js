@@ -10,7 +10,8 @@ const ItemRoute = express.Router();
 ItemRoute.post('/createItem/:profileId' , protect , async(req,res)=>{
   try {
     console.log("working fine")
-      const {img  , price , name}=req.body;
+      const { price , name}=req.body;
+      let {img} = req.body
       const  { created_by}=req.user;
    const  { profileId}=req.params;
     const existitem = await Item.findOne({name , img });
