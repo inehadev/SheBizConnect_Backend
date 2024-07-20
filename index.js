@@ -19,8 +19,8 @@ dotenv.config();
 connectDB();
 
 app.use(cors({
-  origin: '*', // Your frontend URL
-  optionsSuccessStatus: 200
+    origin: 'https://shebizconnect.vercel.app', // Your frontend URL
+    optionsSuccessStatus: 200
 }));
 
 
