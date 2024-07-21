@@ -13,9 +13,6 @@ const UpdateModel = new mongoose.Schema({
     title:{
         type:String,
     },
-    images: {
-        type: [String] 
-    },
     typeofp:{
         type:String
     },
@@ -25,10 +22,15 @@ const UpdateModel = new mongoose.Schema({
     contact:{
         type:Number,
     },
-    profilepic:{
-        type:String
-    }
+    gallery: [{
+        type: String,
+    }],
+    item: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Item',
+    }]
 
+    
 
 })
 

@@ -18,11 +18,7 @@ dotenv.config();
 
 connectDB();
 
-app.use(cors({
-    origin: 'https://shebizconnect.vercel.app', // Your frontend URL
-    optionsSuccessStatus: 200
-}));
-
+app.use(cors());
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -34,6 +30,13 @@ cloudinary.config({
     api_secret:process.env.CLOUDINARY_API_SECRET
  
  })
+
+ app.use((req, res, next) => {
+    console.log('Request URL:', req.url);
+    console.log('CORS headers set:', res.getHeaders()['access-control-allow-origin']);
+    next();
+});
+
  
 
 
