@@ -18,7 +18,21 @@ dotenv.config();
 
 connectDB();
 
-app.use(cors());
+
+
+
+app.use(cors({
+    origin: "*",
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
+    credentials: true
+}));
+
+app.use((req, res, next) => {
+    console.log('Request URL:', req.url);
+    console.log('CORS headers set:', res.getHeaders()['access-control-allow-origin']);
+    next();
+});
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
