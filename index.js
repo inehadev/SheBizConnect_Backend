@@ -22,17 +22,12 @@ connectDB();
 
 
 app.use(cors({
-    origin: "*",
+    origin: ['http://localhost:5174' , "https://shebizconnect.vercel.app "],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
     credentials: true
 }));
 
-app.use((req, res, next) => {
-    console.log('Request URL:', req.url);
-    console.log('CORS headers set:', res.getHeaders()['access-control-allow-origin']);
-    next();
-});
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -53,8 +48,7 @@ cloudinary.config({
 
  
 
-
-app.use(  authRouter);
+app.use( authRouter);
 app.use( categoryRouter)
 app.use(ProfileRoute)
 app.use(ItemRoute);
