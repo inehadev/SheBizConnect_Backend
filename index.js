@@ -22,7 +22,9 @@ connectDB();
 
 
 app.use(cors({
+
     origin: ['http://localhost:5174' , "https://shebizconnect.vercel.app "],
+
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
     credentials: true
