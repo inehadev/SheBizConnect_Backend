@@ -23,7 +23,7 @@ connectDB();
 
 app.use(cors({
 
-    origin: ['http://localhost:5174' , "https://shebizconnect.vercel.app "],
+    origin: ['http://localhost:5174' , "https://shebizconnect.vercel.app "  ],
 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
@@ -55,6 +55,12 @@ app.use( categoryRouter)
 app.use(ProfileRoute)
 app.use(ItemRoute);
 app.use(visitRouter);
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Something went wrong!' });
+});
+
 
 const PORT=4000;
 
